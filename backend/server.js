@@ -11,6 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/attendance', require('./routes/attendance')); // Nueva ruta de asistencia
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
