@@ -10,18 +10,22 @@ const createAdmin = async () => {
 
     const email = "leandrotimberini@gmail.com";
     const password = "Nachito29";
-    const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Verificar si ya existe el usuario
     const existingAdmin = await User.findOne({ email });
     if (existingAdmin) {
       console.log("⚠️ El usuario administrador ya existe.");
       process.exit(1);
     }
 
+    // Encriptar la contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Crear el usuario administrador
     const admin = new User({
       name: "Administrador",
       email,
-      password: hashedPassword,
+      password: hashedPassword, // Guardar contraseña encriptada
       role: "admin"
     });
 
