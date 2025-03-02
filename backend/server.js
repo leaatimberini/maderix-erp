@@ -7,11 +7,12 @@ const connectDB = require('./config/db');
 const app = express();
 connectDB();
 
-app.use(cors());
+app.use(cors({ origin: "http://localhost:3000" })); // Permitir peticiones del frontend
 app.use(bodyParser.json());
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/attendance', require('./routes/attendance')); // Nueva ruta de asistencia
+app.use('/api/dashboard', require('./routes/dashboard')); // Nueva ruta de Dashboard
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
