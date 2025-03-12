@@ -1,27 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
-const Order = require('../models/Order');  // Modelo de órdenes de producción
-const Stock = require('../models/Stock');  // Modelo de stock
-const Invoice = require('../models/Invoice'); // Modelo de facturación
 
-router.get('/stats', async (req, res) => {
-  try {
-    const totalEmployees = await User.countDocuments();
-    const totalOrders = await Order.countDocuments({ status: 'en_proceso' });
-    const totalStock = await Stock.aggregate([{ $group: { _id: null, total: { $sum: "$quantity" } } }]);
-    const totalRevenue = await Invoice.aggregate([{ $group: { _id: null, total: { $sum: "$amount" } } }]);
+// Datos de ejemplo (debería venir de la base de datos)
+router.get('/stats', (req, res) => {
+  res.json({
+    empleados: 45,
+    stock: 120,
+    ventas: 300000,
+    produccion: 520
+  });
+});
 
-    res.json({
-      totalEmployees,
-      totalOrders,
-      totalStock: totalStock.length > 0 ? totalStock[0].total : 0,
-      totalRevenue: totalRevenue.length > 0 ? totalRevenue[0].total : 0
-    });
-  } catch (err) {
-    console.error("❌ Error en el dashboard:", err);
-    res.status(500).json({ message: 'Error en el servidor' });
-  }
+router.get('/chart-data', (req, res) => {
+  res.json([
+    { fecha: "Lunes", produccion: 100 },
+    { fecha: "Martes", produccion: 120 },
+    { fecha: "Miércoles", produccion: 130 },
+    { fecha: "Jueves", produccion: 110 },
+    { fecha: "Viernes", produccion: 140 }
+  ]);
 });
 
 module.exports = router;
